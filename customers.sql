@@ -1,32 +1,32 @@
 -- Procedures and Functions on Customers
 
--- Return cursor with customer data looked up by customername
-CREATE OR REPLACE FUNCTION fn_get_customer_by_customername(p_customername IN VARCHAR2) RETURN SYS_REFCURSOR IS
+-- Return cursor with customer data looked up by username
+CREATE OR REPLACE FUNCTION fn_get_customer_by_username(p_username IN VARCHAR2) RETURN SYS_REFCURSOR IS
   l_cur SYS_REFCURSOR;
 BEGIN
   OPEN l_cur FOR
-    SELECT customer_id, customername, email, passd_hash, phone_number, date_created, is_verified
+    SELECT customer_id, username, email, passd_hash, phone_number, date_created, is_verified
     FROM Customer
-    WHERE customername = p_customername;
+    WHERE username = p_username;
   RETURN l_cur;
-END fn_get_customer_by_customername;
+END fn_get_customer_by_username;
 
 
--- Check customername availability: returns 1 - available, 0 - taken
-CREATE OR REPLACE FUNCTION fn_is_customername_available(p_customername IN VARCHAR2) RETURN NUMBER IS
+-- Check username availability: returns 1 - available, 0 - taken
+CREATE OR REPLACE FUNCTION fn_is_username_available(p_username IN VARCHAR2) RETURN NUMBER IS
   l_count NUMBER;
 BEGIN
-  SELECT COUNT(*) INTO l_count FROM Customer WHERE customername = p_customername;
+  SELECT COUNT(*) INTO l_count FROM Customer WHERE username = p_username;
   IF l_count = 0 THEN
     RETURN 1;
   ELSE
     RETURN 0;
   END IF;
-END fn_is_customername_available;
+END fn_is_username_available;
 
 
 CREATE OR REPLACE PROCEDURE pr_create_customer(
-  p_customername      IN VARCHAR2,
+  p_username      IN VARCHAR2,
   p_email         IN VARCHAR2,
   p_passd_hash    IN VARCHAR2,
   p_phone_number  IN VARCHAR2,
@@ -34,10 +34,10 @@ CREATE OR REPLACE PROCEDURE pr_create_customer(
   p_is_verified   IN CHAR
 ) IS
 BEGIN
-  INSERT INTO Customer(customer_id, customername, email, passd_hash, phone_number, date_created, is_verified)
+  INSERT INTO Customer(customer_id, username, email, passd_hash, phone_number, date_created, is_verified)
   VALUES (
     'GL' || TO_CHAR(seq_customer_num.NEXTVAL),
-    p_customername, p_email, p_passd_hash, p_phone_number, p_date_created, p_is_verified
+    p_username, p_email, p_passd_hash, p_phone_number, p_date_created, p_is_verified
   );
   COMMIT;
 END pr_create_customer;
@@ -64,7 +64,7 @@ END pr_mark_customer_verified;
 -- update certain fields of the customer
 CREATE OR REPLACE PROCEDURE pr_update_customer(
   p_customer_id       IN VARCHAR2,
-  p_customername      IN VARCHAR2 DEFAULT NULL,
+  p_username      IN VARCHAR2 DEFAULT NULL,
   p_email         IN VARCHAR2 DEFAULT NULL,
   p_passd_hash    IN VARCHAR2 DEFAULT NULL,
   p_phone_number  IN VARCHAR2 DEFAULT NULL,
@@ -72,7 +72,7 @@ CREATE OR REPLACE PROCEDURE pr_update_customer(
 ) IS
 BEGIN
   UPDATE Customer
-    SET customername     = COALESCE(p_customername, customername),
+    SET username     = COALESCE(p_username, username),
         email        = COALESCE(p_email, email),
         passd_hash   = COALESCE(p_passd_hash, passd_hash),
         phone_number = COALESCE(p_phone_number, phone_number),

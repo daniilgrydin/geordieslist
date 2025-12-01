@@ -19,7 +19,7 @@ CREATE OR REPLACE FUNCTION fn_get_messages_for_listing(p_listing_id IN VARCHAR2)
 BEGIN
   OPEN l_cur FOR
     SELECT m.customer_id, m.listing_id, m.date_sent, m.content, m.is_read,
-           u.customername
+           u.username
     FROM Message m
     LEFT JOIN Customer u ON m.customer_id = u.customer_id
     WHERE m.listing_id = p_listing_id
