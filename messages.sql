@@ -11,6 +11,7 @@ BEGIN
   VALUES (p_customer_id, p_listing_id, p_date_sent, p_content, "FALSE");
   COMMIT;
 END pr_send_message;
+/
 
 
 -- return cursors for the specified listing
@@ -26,7 +27,7 @@ BEGIN
     ORDER BY m.date_sent DESC;
   RETURN l_cur;
 END fn_get_messages_for_listing;
-
+/
 
 -- mark message as read
 CREATE OR REPLACE PROCEDURE pr_mark_message_read(
@@ -42,7 +43,7 @@ BEGIN
       AND date_sent = p_date_sent;
   COMMIT;
 END pr_mark_message_read;
-
+/
 
 -- edit a message
 CREATE OR REPLACE PROCEDURE pr_update_message(
@@ -61,7 +62,7 @@ BEGIN
       AND date_sent = p_date_sent;
   COMMIT;
 END pr_update_message;
-
+/
 
 -- delete a message
 CREATE OR REPLACE PROCEDURE pr_delete_message(
@@ -76,3 +77,4 @@ BEGIN
       AND date_sent = p_date_sent;
   COMMIT;
 END pr_delete_message;
+/

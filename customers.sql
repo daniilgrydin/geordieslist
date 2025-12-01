@@ -10,7 +10,7 @@ BEGIN
     WHERE username = p_username;
   RETURN l_cur;
 END fn_get_customer_by_username;
-
+/
 
 -- Check username availability: returns 1 - available, 0 - taken
 CREATE OR REPLACE FUNCTION fn_is_username_available(p_username IN VARCHAR2) RETURN NUMBER IS
@@ -23,7 +23,7 @@ BEGIN
     RETURN 0;
   END IF;
 END fn_is_username_available;
-
+/
 
 CREATE OR REPLACE PROCEDURE pr_create_customer(
   p_username      IN VARCHAR2,
@@ -41,7 +41,7 @@ BEGIN
   );
   COMMIT;
 END pr_create_customer;
-
+/
 
 CREATE OR REPLACE PROCEDURE pr_mark_customer_verified(p_customer_id IN VARCHAR2) IS
 BEGIN
@@ -50,7 +50,7 @@ BEGIN
     WHERE customer_id = p_customer_id;
   COMMIT;
 END pr_mark_customer_verified;
-
+/
 
 CREATE OR REPLACE PROCEDURE pr_revoke_customer_verified(p_customer_id IN VARCHAR2) IS
 BEGIN
@@ -58,8 +58,8 @@ BEGIN
     SET is_verified = 'FALSE'
     WHERE customer_id = p_customer_id;
   COMMIT;
-END pr_mark_customer_verified;
-
+END pr_revoke_customer_verified;
+/
 
 -- update certain fields of the customer
 CREATE OR REPLACE PROCEDURE pr_update_customer(
@@ -80,7 +80,7 @@ BEGIN
     WHERE customer_id = p_customer_id;
   COMMIT;
 END pr_update_customer;
-
+/
 
 -- delete both customer and all relevant data
 CREATE OR REPLACE PROCEDURE pr_delete_customer(p_customer_id IN VARCHAR2) IS
@@ -92,3 +92,4 @@ BEGIN
   DELETE FROM Customer WHERE customer_id = p_customer_id;
   COMMIT;
 END pr_delete_customer;
+/
