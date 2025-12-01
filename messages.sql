@@ -8,10 +8,10 @@ CREATE OR REPLACE PROCEDURE pr_send_message(
 ) IS
 BEGIN
   INSERT INTO Message(customer_id, listing_id, date_sent, content, is_read)
-  VALUES (p_customer_id, p_listing_id, p_date_sent, p_content, "F");
+  VALUES (p_customer_id, p_listing_id, p_date_sent, p_content, "FALSE");
   COMMIT;
 END pr_send_message;
-/
+
 
 -- return cursors for the specified listing
 CREATE OR REPLACE FUNCTION fn_get_messages_for_listing(p_listing_id IN VARCHAR2) RETURN SYS_REFCURSOR IS
@@ -26,7 +26,7 @@ BEGIN
     ORDER BY m.date_sent DESC;
   RETURN l_cur;
 END fn_get_messages_for_listing;
-/
+
 
 -- mark message as read
 CREATE OR REPLACE PROCEDURE pr_mark_message_read(
@@ -36,13 +36,13 @@ CREATE OR REPLACE PROCEDURE pr_mark_message_read(
 ) IS
 BEGIN
   UPDATE Message
-    SET is_read = 'T'
+    SET is_read = 'TRUE'
     WHERE customer_id = p_customer_id
       AND listing_id = p_listing_id
       AND date_sent = p_date_sent;
   COMMIT;
 END pr_mark_message_read;
-/
+
 
 -- edit a message
 CREATE OR REPLACE PROCEDURE pr_update_message(
@@ -61,7 +61,7 @@ BEGIN
       AND date_sent = p_date_sent;
   COMMIT;
 END pr_update_message;
-/
+
 
 -- delete a message
 CREATE OR REPLACE PROCEDURE pr_delete_message(
@@ -76,4 +76,3 @@ BEGIN
       AND date_sent = p_date_sent;
   COMMIT;
 END pr_delete_message;
-/

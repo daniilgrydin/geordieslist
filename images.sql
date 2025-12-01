@@ -14,7 +14,7 @@ BEGIN
   );
   COMMIT;
 END pr_add_image;
-/
+
 
 CREATE OR REPLACE PROCEDURE pr_update_image(
   p_image_id    IN VARCHAR2,
@@ -28,11 +28,10 @@ BEGIN
     WHERE image_id = p_image_id;
   COMMIT;
 END pr_update_image;
-/
+
 
 CREATE OR REPLACE PROCEDURE pr_delete_image(p_image_id IN VARCHAR2) IS
 BEGIN
   DELETE FROM Image WHERE image_id = p_image_id;
   COMMIT;
 END pr_delete_image;
-/

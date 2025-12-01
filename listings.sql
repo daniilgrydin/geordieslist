@@ -19,7 +19,7 @@ BEGIN
   );
   COMMIT;
 END pr_create_listing;
-/
+
 
 CREATE OR REPLACE PROCEDURE pr_expire_listings(p_today IN DATE) IS
 BEGIN
@@ -30,7 +30,7 @@ BEGIN
       AND status = 'active';
   COMMIT;
 END pr_expire_listings;
-/
+
 
 CREATE OR REPLACE PROCEDURE pr_add_favourite(p_customer_id IN VARCHAR2, p_listing_id IN VARCHAR2) IS
 BEGIN
@@ -41,14 +41,14 @@ EXCEPTION
   WHEN DUP_VAL_ON_INDEX THEN
     NULL; -- already favourite, ignore
 END pr_add_favourite;
-/
+
 
 CREATE OR REPLACE PROCEDURE pr_remove_favourite(p_customer_id IN VARCHAR2, p_listing_id IN VARCHAR2) IS
 BEGIN
   DELETE FROM Favourites WHERE customer_id = p_customer_id AND listing_id = p_listing_id;
   COMMIT;
 END pr_remove_favourite;
-/
+
 
 -- delete a listing and all relevant data
 CREATE OR REPLACE PROCEDURE pr_delete_listing(p_listing_id IN VARCHAR2) IS
@@ -59,7 +59,7 @@ BEGIN
   DELETE FROM Listing WHERE listing_id = p_listing_id;
   COMMIT;
 END pr_delete_listing;
-/
+
 
 -- update some values of a listing listing
 CREATE OR REPLACE PROCEDURE pr_update_listing(
@@ -84,5 +84,4 @@ BEGIN
     WHERE listing_id = p_listing_id;
   COMMIT;
 END pr_update_listing;
-/
 
